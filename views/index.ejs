@@ -1,0 +1,53 @@
+<%- include("layouts/header") %>
+    <div class="container my-4">
+
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <form method="GET" action="/search" class="form-inline">
+                    <div class="form-group">
+                        <input autocomplete="off" type="text" name="search_query" class="form-control">
+                    </div>
+                    <input class="btn btn-primary mx-2" type="submit" value="search">
+                </form>
+            </div>
+        </div>
+
+
+        <div class="row text-center">
+
+            <% videos.forEach(function (video) { %>
+
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100">
+                        <img class="thumbnail mt-2 ml-2" src="<%= video.thumbnail %>"
+                            style="width: 240px; height: 160px;">
+
+                        <p>
+                            <%= video.minutes + ":" + video.seconds %>
+                        </p>
+
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <%= video.title %>
+                            </h4>
+
+                            <p class="card-text">
+                                <%= video.category %>
+                            </p>
+
+                        </div>
+                        <div class="card-footer">
+                            <a href="/watch/<%= video.watch %>" class="btn btn-primary">
+                                View
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <% }) %>
+
+        </div>
+    </div>
+
+
+    <%- include("layouts/footer") %>

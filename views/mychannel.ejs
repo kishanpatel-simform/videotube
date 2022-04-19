@@ -1,0 +1,83 @@
+<%- include ("layouts/header") %>
+    <div class="mt-4">
+        <% if (isMyChannel) { %>
+            <form method="POST" action="/change-profile-picture" enctype="multipart/form-data" id="form-change-profile-picture">
+                <input type="file" id="input-file-change-profile-picture" style="display: none;" accept="image/*" name="image" required onchange="document.getElementById('form-change-profile-picture').submit();">
+            </form>
+            <form method="POST" action="/change-cover-picture" enctype="multipart/form-data" id="form-change-profile-picture">
+                <input type="file" id="input-file-change-cover-photo" style="display: none;" accept="image/*" name="image" required onchange="document.getElementById('form-change-profile-picture').submit();">
+            </form>
+            <% } %>
+                <style>
+                    cover-photo {
+                        width: 100%;
+                    }
+                    
+                    .profile-photo {
+                        width: 150px;
+                        height: 150px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                    }
+                </style>
+                <div class="container-fluid">
+
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <% if (isMyChannel) { %>
+                                <img src="<%= baseUrl + user. image %>" style="cursor: pointer;" class="img-fluid cover-photo" onerror="this.src='http://placehold.it/1900x700'" onclick="document.getElementById('input-file-change-profile-picture').click();">
+                                <% } else { %>
+                                    <img src="<%= baseUrl + user.image %>" class="img-fluid cover-photo" onerror="this.src='http://placehold.it/1900x700'">
+                                    <% } %>
+                        </div>
+                        <div class="col-md-8">
+                            <h3>
+                                <%= user.name %>
+                            </h3>
+                            <p>
+                                <%= user.subscribers %> subscribers
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <h1>Channel Videos</h1>
+                    <hr>
+                    <div class="row">
+                        <% user.videos=user.videos.reverse(); user.videos.forEach(function (video) { %>
+                            <div class="col-md-4">
+                                <div class="card h-100">
+
+
+                                    <img class="card-img-top" src="<%= baseUrl + video. thumbnail %>">
+                                    <div class="card-body">
+                                        <h4 class="card-title">
+                                            <%= video.title %>
+                                        </h4>
+                                        <p class="card-text">
+                                            <%= video.category %>
+                                        </p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a href="/watch/<%= video.watch %>" class="btn btn-primary">View</a>
+                                        <% if (isMyChannel) { %>
+                                            <a class="btn btn-warning" href="/edit/<%= video.watch %>">
+                                            Edit
+                                        </a>
+                                            <form method="POST" action="/delete-video" onsubmit=" confirm('Are you sure you want to delete this video ? ');" style="display: contents;">
+                                                <input type="hidden" name="_id" value="<%= video._id %>">
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                            <% } %>
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <% }) %>
+                    </div>
+                </div>
+    </div>
+    <%- include ("layouts/footer") %>
